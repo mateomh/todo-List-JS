@@ -8,6 +8,27 @@
   <title>Document</title>
 </head>
 <body>
+  <div id="top-nav">
+    <button id="task-button" data-state="0">Create task</button>
+    <button id="group-button">Create Group</button>
+  </div>
+  <div id="task-form" class="form hide">
+    <label class="task-label" for="task-title">Task</label>
+    <input class="task-input" type="text" name="task-title" id="task-title">
+    <label class="task-label" for="task-desc">Description</label>
+    <textarea class="task-input task-area" name="task-desc" id="task-desc" cols="30" rows="3"></textarea>
+    <label class="task-label" for="task-date">Due Date</label>
+    <input class="task-input" type="date" name="task-date" id="task-date">
+    <label class="task-label" for="task-priority">High Priority?</label>
+    <input class="task-input" type="checkbox" name="task-priority" id="task-priority">
+  </div>
+  <div id="group-form" class="form hide">
+    <label class="task-label" for="group-name">Group Name</label>
+    <input class="task-input" type="text" name="group-name" id="group-name">
+  </div>
+  <div id="content">
+    
+  </div>
   <script src="./main.js"></script>
 </body>
 </html>
