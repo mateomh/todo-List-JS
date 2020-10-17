@@ -1,3 +1,6 @@
+let tasks = [];
+const groups = ['General', 'Home', 'Math'];
+
 // ################## TASK RELATED ######################
 
 function createTask(event) {
@@ -27,9 +30,10 @@ function taskFormData(action) {
   const taskDesc = document.getElementById('task-desc');
   const taskDate = document.getElementById('task-date');
   const taskPriority = document.getElementById('task-priority');
+  let data;
   switch (action) {
     case 'get':
-      return {
+      data = {
         title: taskTitle.value,
         desc: taskDesc.value,
         date: taskDate.value,
@@ -45,6 +49,7 @@ function taskFormData(action) {
     default:
       break;
   }
+  return data;
 }
 
 function taskClick(event) {
@@ -61,11 +66,11 @@ function renderTaskItem(taskContent) {
   if (taskContent.priority) {
     card.classList.add('high-priority');
   }
-  
+
   const header = document.createElement('h1');
   header.classList.add('task-title');
   header.textContent = taskContent.title;
-  
+
   const desc = document.createElement('p');
   desc.setAttribute('class', 'task-desc hide');
   desc.textContent = taskContent.desc;
@@ -105,8 +110,7 @@ function createGroup(event) {
   if (state === '1') {
     event.target.setAttribute('data-state', '0');
     // appStorage.setItem('tasks',tasks);
-  }
-  else {
+  } else {
     event.target.setAttribute('data-state', '1');
   }
   form.classList.toggle('hide');
@@ -117,25 +121,36 @@ function createGroup(event) {
 
 function showGroup(event) {
   const index = event.target.getAttribute('tabIndex');
-  const tasks = document.getElementById('tasks'+index);
-  tasks.classList.toggle('hide');
+  const tasksContainer = document.getElementById(`tasks${index}`);
+  tasksContainer.classList.toggle('hide');
+}
+
+function getGroupTasks(group, index, contentElement) {
+  const tasksContainer = document.createElement('div');
+  tasksContainer.setAttribute('id', `tasks${index}`);
+  tasks.filter();
 }
 
 function createGroupTab(group, index) {
   const contents = document.getElementById('content');
   const btn = document.createElement('button');
-
   btn.classList.add('groups');
   btn.tabIndex = index;
-  btn.setAttribute('id', group+index);
-  btn.innerHTML = '<i class="fa fa-chevron-down fa-1x" aria-hidden="true"></i> ' + group + index;
+  btn.setAttribute('id', group + index);
+  btn.innerHTML = `<i class="fa fa-chevron-down fa-1x" aria-hidden="true"></i>   ${group}`;
   btn.addEventListener('click', showGroup);
   contents.append(btn);
 }
 
+function renderGroups() {
+  const groupsTabs = [];
+  for (let i = 0; i < groups.length; i += 1) {
+    groupsTabs.push(createGroupTab(groups[i], i));
+  }
+}
+
 // const appStorage = window.localStorage;
-let tasks = [];
-let groups = [];
+
 
 // if(appStorage.getItem('tasks')){
 //   tasks = appStorage.getItem('tasks');
@@ -154,7 +169,7 @@ btn2.addEventListener('click', createGroup);
 // const grp = document.getElementById('group1');
 // grp.addEventListener('click', showGroup);
 
-createGroupTab('group', '1');
+renderGroups();
 
 // const [task] = document.getElementsByClassName('task-card');
 // task.addEventListener('click', taskClick);
