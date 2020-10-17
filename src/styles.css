@@ -161,3 +161,33 @@
 .complete {
   background-color: limegreen;
 }
+
+.groups {
+border: 1vh solid var(--color6);
+border-top: none;
+border-left: none;
+border-radius: 0 0 15vh 0;
+outline: none;
+width: 100%;
+background-color: white;
+padding: 2vh;
+margin: 7vh 0;
+font-size: 7vh;
+font-weight: bolder;
+color: var(--color7);
+text-align: center;
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color1);
+  border-radius: 0 15vh 0 0;
+}
+
+.empty {
+  color: grey;
+  font-size: 10vh;
+}
