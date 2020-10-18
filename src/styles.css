@@ -119,10 +119,11 @@
   margin: 5vh 0;
   padding: 5vh 0;
   border: 0.6vh solid var(--color4);
-  border-radius: 35vh;
+  border-radius: 15vh;
   background-color: var(--color1);
   color: var(--color6);
   font-size: 3vh;
+  width: 80%;
 }
 
 .high-priority {

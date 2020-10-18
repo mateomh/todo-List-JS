@@ -1,5 +1,43 @@
-const tasks = [];
-const groups = ['General', 'Home', 'Math'];
+// ################### GENERAL APPLICATION METHODS #################
+
+function clearContents() {
+  const contents = document.getElementById('content');
+  while (contents.firstChild) {
+    contents.removeChild(contents.firstChild);
+  }
+}
+
+function storeTasks(tasks) {
+  const appStorage = window.localStorage;
+  appStorage.removeItem('tasks');
+  appStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function getTasks() {
+  const appStorage = window.localStorage;
+  // appStorage.clear();
+  let allTasks = JSON.parse(appStorage.getItem('tasks'));
+  if (!allTasks) {
+    allTasks = [];
+  }
+  return allTasks;
+}
+
+function storeGroups(groups) {
+  const appStorage = window.localStorage;
+  appStorage.removeItem('groups');
+  appStorage.setItem('groups', JSON.stringify(groups));
+}
+
+function getGroups() {
+  const appStorage = window.localStorage;
+  // appStorage.clear();
+  let allGroups = JSON.parse(appStorage.getItem('groups'));
+  if (!allGroups) {
+    allGroups = ['General'];
+  }
+  return allGroups;
+}
 
 // ################## TASK RELATED ######################
 
@@ -8,17 +46,19 @@ function createTask(event) {
   const contents = document.getElementById('content');
   const groupbtn = document.getElementById('group-button');
   const state = event.target.getAttribute('data-state');
+  const tasks = getTasks();
   if (state === '1') {
     event.target.setAttribute('data-state', '0');
     const tempTask = taskFormData('get');
-    renderTaskItem(tempTask);
     taskFormData('clear');
     tasks.push(tempTask);
-    // appStorage.setItem('tasks',tasks);
-  }
-  else {
+    storeTasks(tasks);
+    clearContents();
+    renderGroups();
+  } else {
     event.target.setAttribute('data-state', '1');
   }
+  console.log(tasks);
   form.classList.toggle('hide');
   contents.classList.toggle('hide');
   event.target.classList.toggle('full-view');
@@ -30,6 +70,7 @@ function taskFormData(action) {
   const taskDesc = document.getElementById('task-desc');
   const taskDate = document.getElementById('task-date');
   const taskPriority = document.getElementById('task-priority');
+  const taskGroup = document.getElementById('task-group');
   let data;
   switch (action) {
     case 'get':
@@ -38,6 +79,7 @@ function taskFormData(action) {
         desc: taskDesc.value,
         date: taskDate.value,
         priority: taskPriority.checked,
+        group: taskGroup.value,
       };
       break;
     case 'clear':
@@ -60,7 +102,6 @@ function taskClick(event) {
 }
 
 function renderTaskItem(taskContent) {
-  const container = document.getElementById('content');
   const card = document.createElement('div');
   card.classList.add('task-card');
   if (taskContent.priority) {
@@ -107,9 +148,15 @@ function createGroup(event) {
   const contents = document.getElementById('content');
   const taskbtn = document.getElementById('task-button');
   const state = event.target.getAttribute('data-state');
+  const groupName = document.getElementById('group-name');
+  const groups = getGroups();
+
   if (state === '1') {
     event.target.setAttribute('data-state', '0');
-    // appStorage.setItem('tasks',tasks);
+    groups.push(groupName.value);
+    storeGroups(groups);
+    clearContents();
+    renderGroups();
   } else {
     event.target.setAttribute('data-state', '1');
   }
@@ -127,6 +174,7 @@ function showGroup(event) {
 
 function getGroupTasks(group, index) {
   const tasksContainer = document.createElement('div');
+  const tasks = getTasks();
   tasksContainer.setAttribute('id', `tasks${index}`);
   tasksContainer.classList.add('hide');
   tasksContainer.classList.add('tasks');
@@ -162,6 +210,8 @@ function createGroupTab(group, index) {
 
 function renderGroups() {
   const groupsTabs = [];
+  const groups = getGroups();
+
   for (let i = 0; i < groups.length; i += 1) {
     groupsTabs.push(createGroupTab(groups[i], i));
   }
@@ -170,25 +220,17 @@ function renderGroups() {
 function fillGroupsDropdown() {
   const dropdown = document.getElementById('task-group');
   const options = [];
+  const groups = getGroups();
+
   for (let i = 0; i < groups.length; i += 1) {
     const item = document.createElement('option');
     item.innerText = groups[i];
-    item.value = i;
+    item.value = groups[i];
     options.push(item);
   }
   dropdown.selectedIndex = '0';
   dropdown.append(...options);
 }
-// const appStorage = window.localStorage;
-
-
-// if(appStorage.getItem('tasks')){
-//   tasks = appStorage.getItem('tasks');
-// }
-
-// if(appStorage.getItem('groups')){
-//   groups = appStorage.getItem('groups');
-// }
 
 const btn1 = document.getElementById('task-button');
 btn1.addEventListener('click', createTask);
@@ -196,11 +238,5 @@ btn1.addEventListener('click', createTask);
 const btn2 = document.getElementById('group-button');
 btn2.addEventListener('click', createGroup);
 
-// const grp = document.getElementById('group1');
-// grp.addEventListener('click', showGroup);
-
 fillGroupsDropdown();
 renderGroups();
-
-// const [task] = document.getElementsByClassName('task-card');
-// task.addEventListener('click', taskClick);
