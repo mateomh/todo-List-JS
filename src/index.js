@@ -1,4 +1,4 @@
-let tasks = [];
+const tasks = [];
 const groups = ['General', 'Home', 'Math'];
 
 // ################## TASK RELATED ######################
@@ -97,7 +97,7 @@ function renderTaskItem(taskContent) {
 
   card.append(header, desc, date, buttons);
   card.addEventListener('click', taskClick)
-  container.append(card);
+  return card;
 }
 
 // ################# GROUP RELATED #####################
@@ -125,21 +125,39 @@ function showGroup(event) {
   tasksContainer.classList.toggle('hide');
 }
 
-function getGroupTasks(group, index, contentElement) {
+function getGroupTasks(group, index) {
   const tasksContainer = document.createElement('div');
   tasksContainer.setAttribute('id', `tasks${index}`);
-  tasks.filter();
+  tasksContainer.classList.add('hide');
+  tasksContainer.classList.add('tasks');
+  const groupTasks = tasks.filter(task => task.group === group);
+  const taskCards = [];
+  if (groupTasks.length === 0) {
+    const tempCard = document.createElement('h2');
+    tempCard.innerText = 'No Tasks Assigned';
+    tempCard.setAttribute('class', 'empty');
+    taskCards.push(tempCard);
+  } else {
+    for (let i = 0; i < groupTasks.length; i += 1) {
+      const tempTask = renderTaskItem(groupTasks[i]);
+      taskCards.push(tempTask);
+    }
+  }
+  tasksContainer.append(...taskCards);
+  return tasksContainer;
 }
 
 function createGroupTab(group, index) {
   const contents = document.getElementById('content');
   const btn = document.createElement('button');
   btn.classList.add('groups');
-  btn.tabIndex = index;
   btn.setAttribute('id', group + index);
+  btn.tabIndex = index;
   btn.innerHTML = `<i class="fa fa-chevron-down fa-1x" aria-hidden="true"></i>   ${group}`;
   btn.addEventListener('click', showGroup);
   contents.append(btn);
+  const groupTasks = getGroupTasks(group, index);
+  contents.appendChild(groupTasks);
 }
 
 function renderGroups() {
@@ -149,6 +167,18 @@ function renderGroups() {
   }
 }
 
+function fillGroupsDropdown() {
+  const dropdown = document.getElementById('task-group');
+  const options = [];
+  for (let i = 0; i < groups.length; i += 1) {
+    const item = document.createElement('option');
+    item.innerText = groups[i];
+    item.value = i;
+    options.push(item);
+  }
+  dropdown.selectedIndex = '0';
+  dropdown.append(...options);
+}
 // const appStorage = window.localStorage;
 
 
@@ -169,6 +199,7 @@ btn2.addEventListener('click', createGroup);
 // const grp = document.getElementById('group1');
 // grp.addEventListener('click', showGroup);
 
+fillGroupsDropdown();
 renderGroups();
 
 // const [task] = document.getElementsByClassName('task-card');
