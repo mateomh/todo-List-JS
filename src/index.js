@@ -80,6 +80,7 @@ function taskFormData(action) {
         date: taskDate.value,
         priority: taskPriority.checked,
         group: taskGroup.value,
+        complete: false,
       };
       break;
     case 'clear':
@@ -145,6 +146,12 @@ function renderTaskItem(taskContent) {
   compltbtn.innerHTML = `<i class="fa fa-check fa-3x" tabindex =${index} aria-hidden="true"></i>`;
   compltbtn.addEventListener('click', completeTask);
 
+  if (taskContent.complete) {
+    compltbtn.classList.add('hide');
+    card.classList.add('complete-task');
+  }
+  console.log(typeof taskContent.complete);
+
   buttons.append(compltbtn, editbtn, delbtn);
 
   card.append(header, desc, date, buttons);
@@ -166,7 +173,14 @@ function deleteTask(event) {
 }
 
 function completeTask(event) {
-  console.log(event.target.tabIndex);
+  const index = parseInt(event.target.tabIndex);
+  const tasks = getTasks();
+  tasks[index].complete = true;
+  storeTasks(tasks);
+  clearContents();
+  renderGroups();
+  event.target.tabIndex = 0;
+  showGroup(event);
 }
 
 function editTask(event) {

@@ -210,3 +210,8 @@ text-align: center;
 button > * {
   pointer-events: none;
 }
+
+.complete-task {
+  color: var(--color5);
+  border: 1vh dashed limegreen;
+}
