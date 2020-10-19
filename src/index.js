@@ -58,14 +58,13 @@ function createTask(event) {
   } else {
     event.target.setAttribute('data-state', '1');
   }
-  console.log(tasks);
   form.classList.toggle('hide');
   contents.classList.toggle('hide');
   event.target.classList.toggle('full-view');
   groupbtn.classList.toggle('hide');
 }
 
-function taskFormData(action) {
+function taskFormData(action, editData = null) {
   const taskTitle = document.getElementById('task-title');
   const taskDesc = document.getElementById('task-desc');
   const taskDate = document.getElementById('task-date');
@@ -88,6 +87,13 @@ function taskFormData(action) {
       taskDesc.value = '';
       taskDate.value = '';
       taskPriority.checked = false;
+      break;
+    case 'set':
+      taskTitle.value = editData.title;
+      taskDesc.value = editData.desc;
+      taskDate.value = editData.date;
+      taskPriority.checked = editData.priority;
+      taskGroup.value = editData.group;
       break;
     default:
       break;
@@ -150,7 +156,6 @@ function renderTaskItem(taskContent) {
     compltbtn.classList.add('hide');
     card.classList.add('complete-task');
   }
-  console.log(typeof taskContent.complete);
 
   buttons.append(compltbtn, editbtn, delbtn);
 
@@ -184,7 +189,45 @@ function completeTask(event) {
 }
 
 function editTask(event) {
-  console.log(event.target.tabIndex);
+  const form = document.getElementById('task-form');
+  const contents = document.getElementById('content');
+  const groupbtn = document.getElementById('group-button');
+  const taskbtn = document.getElementById('task-button');
+  const editbtn = document.getElementById('edit-button');
+
+  const index = parseInt(event.target.tabIndex);
+  const tasks = getTasks();
+
+  editbtn.classList.toggle('hide');
+  taskbtn.classList.toggle('hide');
+  groupbtn.classList.toggle('hide');
+  contents.classList.toggle('hide');
+  form.classList.toggle('hide');
+  taskFormData('set', tasks[index]);
+
+  editbtn.tabIndex = index;
+}
+
+function updateTask(event) {
+  const form = document.getElementById('task-form');
+  const contents = document.getElementById('content');
+  const groupbtn = document.getElementById('group-button');
+  const taskbtn = document.getElementById('task-button');
+  const index = parseInt(event.target.tabIndex);
+  const tasks = getTasks();
+  const tempTask = taskFormData('get');
+
+  event.target.classList.toggle('hide');
+  taskbtn.classList.toggle('hide');
+  groupbtn.classList.toggle('hide');
+  contents.classList.toggle('hide');
+  form.classList.toggle('hide');
+
+  taskFormData('clear');
+  tasks[index] = tempTask;
+  storeTasks(tasks);
+  clearContents();
+  renderGroups();
 }
 
 // ################# GROUP RELATED #####################
@@ -283,6 +326,9 @@ btn1.addEventListener('click', createTask);
 
 const btn2 = document.getElementById('group-button');
 btn2.addEventListener('click', createGroup);
+
+const btn3 = document.getElementById('edit-button');
+btn3.addEventListener('click', updateTask);
 
 fillGroupsDropdown();
 renderGroups();
