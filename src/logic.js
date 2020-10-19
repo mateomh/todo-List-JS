@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import Task from './task';
 
 export function storeTasks(tasks) {

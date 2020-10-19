@@ -88,10 +88,6 @@
   padding: 5vh;
 }
 
-#task-form {
-  
-}
-
 .task-label {
   font-weight: bolder;
   text-align: center;
@@ -149,6 +145,7 @@
 .buttons {
   margin-top: 3vh;
 }
+
 .action-button {
   border: none;
   color: var(--color1);
@@ -170,19 +167,19 @@
 }
 
 .groups {
-border: 1vh solid var(--color6);
-border-top: none;
-border-left: none;
-border-radius: 0 0 15vh 0;
-outline: none;
-width: 100%;
-background-color: white;
-padding: 2vh;
-margin: 7vh 0;
-font-size: 7vh;
-font-weight: bolder;
-color: var(--color7);
-text-align: center;
+  border: 1vh solid var(--color6);
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 15vh 0;
+  outline: none;
+  width: 100%;
+  background-color: white;
+  padding: 2vh;
+  margin: 7vh 0;
+  font-size: 7vh;
+  font-weight: bolder;
+  color: var(--color7);
+  text-align: center;
 }
 
 .tasks {
