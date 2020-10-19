@@ -75,6 +75,11 @@
   width: 80%;
 }
 
+#alert {
+  color: var(--color2);
+  background-color: var(--color8);
+}
+
 .form {
   display: flex;
   flex-direction: column;

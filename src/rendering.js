@@ -192,7 +192,18 @@ function createTask(event) {
   const groupbtn = document.getElementById('group-button');
   const state = event.target.getAttribute('data-state');
   const tasks = Logic.getTasks();
+
+  fillGroupsDropdown();
+
   if (state === '1') {
+    const alert = document.getElementById('alert');
+    const empty = Logic.checkEmptyForm();
+
+    if (empty) {
+      alert.classList.remove('hide');
+      return;
+    }
+    alert.classList.add('hide');
     event.target.setAttribute('data-state', '0');
     const tempTask = Logic.taskFormData('get');
     Logic.taskFormData('clear');
@@ -203,8 +214,6 @@ function createTask(event) {
   } else {
     event.target.setAttribute('data-state', '1');
   }
-
-  fillGroupsDropdown();
 
   form.classList.toggle('hide');
   contents.classList.toggle('hide');
@@ -221,6 +230,9 @@ function createGroup(event) {
   const groups = Logic.getGroups();
 
   if (state === '1') {
+    if (groupName.value === '') {
+      return;
+    }
     event.target.setAttribute('data-state', '0');
     groups.push(groupName.value);
     Logic.storeGroups(groups);
@@ -243,6 +255,13 @@ function updateTask(event) {
   const index = parseInt(event.target.tabIndex);
   const tasks = Logic.getTasks();
   const tempTask = Logic.taskFormData('get');
+  const alert = document.getElementById('alert');
+  const empty = Logic.checkEmptyForm();
+
+  if (empty) {
+    alert.classList.remove('hide');
+    return;
+  }
 
   event.target.classList.toggle('hide');
   taskbtn.classList.toggle('hide');

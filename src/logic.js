@@ -61,3 +61,14 @@ export function taskFormData(action, editData = null) {
   }
   return data;
 }
+
+export function checkEmptyForm() {
+  const taskTitle = document.getElementById('task-title');
+  const taskDesc = document.getElementById('task-desc');
+  const taskDate = document.getElementById('task-date');
+
+  if (taskTitle.value === '' || taskDesc.value === '' || taskDate.value === '') {
+    return true;
+  }
+  return false;
+}
