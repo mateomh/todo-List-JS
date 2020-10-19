@@ -95,14 +95,19 @@ function taskFormData(action) {
 }
 
 function taskClick(event) {
-  const [desc] = event.target.getElementsByClassName('task-desc');
-  const [edit] = event.target.getElementsByClassName('edit');
-  desc.classList.toggle('hide');
-  edit.classList.toggle('hide');
+  if (event.target.nodeName !== 'BUTTON') {
+    const [desc] = event.target.getElementsByClassName('task-desc');
+    const [edit] = event.target.getElementsByClassName('edit');
+    desc.classList.toggle('hide');
+    edit.classList.toggle('hide');
+  }
 }
 
 function renderTaskItem(taskContent) {
   const card = document.createElement('div');
+  const tasks = getTasks();
+  const index = tasks.findIndex(obj => JSON.stringify(taskContent) === JSON.stringify(obj));
+
   card.classList.add('task-card');
   if (taskContent.priority) {
     card.classList.add('high-priority');
@@ -124,21 +129,48 @@ function renderTaskItem(taskContent) {
 
   const delbtn = document.createElement('button');
   delbtn.setAttribute('class', 'action-button delete');
+  delbtn.setAttribute('tabIndex', index);
   delbtn.innerHTML = '<i class="fa fa-trash-o fa-3x" aria-hidden="true"></i>';
+  delbtn.addEventListener('click', deleteTask);
 
   const editbtn = document.createElement('button');
   editbtn.setAttribute('class', 'action-button edit hide');
-  editbtn.innerHTML = '<i class="fa fa-pencil fa-3x" aria-hidden="true"></i>';
+  editbtn.tabIndex = index;
+  editbtn.innerHTML = `<i class="fa fa-pencil fa-3x" tabindex =${index} aria-hidden="true"></i>`;
+  editbtn.addEventListener('click', editTask);
 
   const compltbtn = document.createElement('button');
   compltbtn.setAttribute('class', 'action-button complete');
-  compltbtn.innerHTML = '<i class="fa fa-check fa-3x" aria-hidden="true"></i>';
+  compltbtn.tabIndex = index;
+  compltbtn.innerHTML = `<i class="fa fa-check fa-3x" tabindex =${index} aria-hidden="true"></i>`;
+  compltbtn.addEventListener('click', completeTask);
 
   buttons.append(compltbtn, editbtn, delbtn);
 
   card.append(header, desc, date, buttons);
-  card.addEventListener('click', taskClick)
+  card.addEventListener('click', taskClick);
   return card;
+}
+
+function deleteTask(event) {
+  const index = parseInt(event.target.tabIndex);
+  const tasks = getTasks();
+  tasks.splice(index, 1);
+  storeTasks(tasks);
+  clearContents();
+  renderGroups();
+  let e = new Event('click');
+  e = event;
+  e.target.tabIndex = 0;
+  showGroup(e);
+}
+
+function completeTask(event) {
+  console.log(event.target.tabIndex);
+}
+
+function editTask(event) {
+  console.log(event.target.tabIndex);
 }
 
 // ################# GROUP RELATED #####################
