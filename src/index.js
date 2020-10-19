@@ -58,6 +58,9 @@ function createTask(event) {
   } else {
     event.target.setAttribute('data-state', '1');
   }
+
+  fillGroupsDropdown();
+
   form.classList.toggle('hide');
   contents.classList.toggle('hide');
   event.target.classList.toggle('full-view');
@@ -205,6 +208,8 @@ function editTask(event) {
   form.classList.toggle('hide');
   taskFormData('set', tasks[index]);
 
+  fillGroupsDropdown()
+
   editbtn.tabIndex = index;
 }
 
@@ -310,6 +315,10 @@ function fillGroupsDropdown() {
   const dropdown = document.getElementById('task-group');
   const options = [];
   const groups = getGroups();
+
+  while (dropdown.firstChild) {
+    dropdown.removeChild(dropdown.firstChild);
+  }
 
   for (let i = 0; i < groups.length; i += 1) {
     const item = document.createElement('option');
