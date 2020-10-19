@@ -25,7 +25,6 @@ export function storeGroups(groups) {
 
 export function getGroups() {
   const appStorage = window.localStorage;
-  // appStorage.clear();
   let allGroups = JSON.parse(appStorage.getItem('groups'));
   if (!allGroups) {
     allGroups = ['General'];
