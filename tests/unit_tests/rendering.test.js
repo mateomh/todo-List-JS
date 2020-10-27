@@ -1,4 +1,4 @@
-import * as Render from '../rendering';
+import * as Render from '../../src/rendering';
 
 document.body.innerHTML = `
   <div id="top-nav">

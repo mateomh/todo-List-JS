@@ -1,4 +1,4 @@
-import Task from '../task';
+import Task from '../../src/task';
 
 const testTask = new Task();
 

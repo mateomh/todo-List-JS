@@ -1,5 +1,5 @@
-import * as Logic from '../logic';
-import Task from '../task';
+import * as Logic from '../../src/logic';
+import Task from '../../src/task';
 
 document.body.innerHTML = `
 <input class="task-input" type="text" name="task-title" id="task-title">
