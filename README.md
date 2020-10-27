@@ -22,7 +22,24 @@ This project is part of the Micorverse Javascript Module. The idea is tu use DOM
 
 ### Usage
 
-Everything you need to run the page is inside the **dist** folder of the project.
+Everything you need to run the page is inside the **dist** folder of the project. Just copy the index.html and the main.js from this folder and open the index.html in you browser. Both files should remain in the same folder for it to work.
+
+### Running the tests
+
+First you need to install all the dependencies for the project, to do this run
+
+> npm install
+
+This will get you all the necessary packages to run the tests.
+
+Then just run from the terminal inside the root folder for the project
+
+> npm run test
+
+You are all set, the result should apper in the command line telling you how many tests and suites were made, and how long it took for each set of tests to run.
+
+![test screenshot](./test_screenshot.png)
+
 
 ## Author
 
